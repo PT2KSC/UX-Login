@@ -6,90 +6,11 @@
 }
 
 .login-shell {
-  width: min(1100px, 100%);
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 24px;
-  align-items: stretch;
-}
-
-.login-story,
-.login-card {
+  width: min(520px, 100%);
   border: 1px solid var(--border);
   border-radius: 28px;
   background: var(--surface);
   box-shadow: var(--shadow);
-}
-
-.login-story {
-  padding: 48px;
-  background:
-    radial-gradient(circle at top left, rgba(221, 167, 255, 0.28), transparent 38%),
-    linear-gradient(160deg, rgba(255, 255, 255, 0.9), rgba(245, 243, 255, 0.9));
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 28px;
-}
-
-.eyebrow {
-  display: inline-flex;
-  width: fit-content;
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: var(--accent-bg);
-  color: var(--accent);
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.login-story h1 {
-  margin: 0;
-  font-size: clamp(2.4rem, 4vw, 4.4rem);
-  line-height: 0.95;
-  letter-spacing: -0.05em;
-  max-width: 11ch;
-}
-
-.story-copy {
-  font-size: 1.05rem;
-  line-height: 1.7;
-  max-width: 56ch;
-}
-
-.benefits {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  gap: 12px;
-}
-
-.benefits li {
-  padding: 14px 16px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-}
-
-.insight-card {
-  padding: 18px 20px;
-  border-radius: 20px;
-  background: rgba(17, 24, 39, 0.92);
-  color: #f8fafc;
-  display: grid;
-  gap: 8px;
-}
-
-.insight-label {
-  color: #c084fc;
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
 }
 
 .login-card {
@@ -99,23 +20,7 @@
 }
 
 .card-header {
-  display: flex;
-  align-items: center;
-  gap: 14px;
   margin-bottom: 28px;
-}
-
-.brand-mark {
-  width: 52px;
-  height: 52px;
-  border-radius: 18px;
-  display: grid;
-  place-items: center;
-  background: linear-gradient(135deg, var(--accent), #1d4ed8);
-  color: #fff;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  box-shadow: 0 18px 30px rgba(129, 65, 185, 0.26);
 }
 
 .card-header h2 {
@@ -140,7 +45,6 @@
 
 .field span,
 .remember,
-.support-text,
 .link {
   font-size: 0.95rem;
 }
@@ -277,23 +181,12 @@
     0 18px 30px rgba(37, 99, 235, 0.26);
 }
 
-.support-text {
-  margin: 0;
-  color: var(--text);
-  line-height: 1.6;
-}
-
 @media (max-width: 900px) {
   .login-page {
     padding: 16px;
   }
 
   .login-shell {
-    grid-template-columns: 1fr;
-  }
-
-  .login-story,
-  .login-card {
     padding: 24px;
     border-radius: 22px;
   }
