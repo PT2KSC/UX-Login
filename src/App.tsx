@@ -1,20 +1,13 @@
-import { useEffect, useRef, useState, type FormEvent } from 'react'
+import { useState, type FormEvent } from 'react'
 import './App.css'
 
 function App() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [statusMessage, setStatusMessage] = useState('')
-  const submitTimerRef = useRef<number | null>(null)
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
 
-  useEffect(() => {
-    return () => {
-      if (submitTimerRef.current !== null) {
-        window.clearTimeout(submitTimerRef.current)
-      }
-    }
-  }, [])
-
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
     if (isSubmitting) {
@@ -22,12 +15,30 @@ function App() {
     }
 
     setIsSubmitting(true)
-    setStatusMessage('Processando seu acesso. Aguarde um instante.')
+    setStatusMessage('Verificando login...')
 
-    submitTimerRef.current = window.setTimeout(() => {
+    try {
+      const response = await fetch('https://fakestoreapi.com/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Credenciais inválidas')
+      }
+
+      setStatusMessage('Login validado com sucesso!')
+    } catch {
+      setStatusMessage('Falha ao validar login. Verifique usuário e senha.')
+    } finally {
       setIsSubmitting(false)
-      setStatusMessage('Ação concluída com sucesso!')
-    }, 1600)
+    }
   }
 
   return (
@@ -36,27 +47,47 @@ function App() {
         <p className="eyebrow">Exercício de UX</p>
         <h1 id="demo-title">Botão de Carregamento</h1>
         <p className="description">
-          Este exemplo simula uma ação que leva alguns segundos. O usuário recebe
-          retorno imediato, vê o estado atual e não consegue disparar a ação em
-          duplicidade.
+          Informe usuário e senha para validar o login via API Fake Store.
         </p>
 
         <form className="button-demo-form" onSubmit={handleSubmit} aria-busy={isSubmitting}>
+          <label htmlFor="username">Usuário</label>
+          <input
+            id="username"
+            name="username"
+            type="text"
+            autoComplete="username"
+            value={username}
+            onChange={(event) => setUsername(event.target.value)}
+            required
+          />
+
+          <label htmlFor="password">Senha</label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            required
+          />
+
           <button type="submit" className="primary-button" disabled={isSubmitting}>
             {isSubmitting ? (
               <span className="button-loading" aria-live="polite">
                 <span className="spinner" aria-hidden="true" />
-                Enviando...
+                Entrando...
               </span>
             ) : (
-              'Enviar'
+              'Login'
             )}
           </button>
 
           <p className="helper-text">
             {isSubmitting
               ? 'Processando a solicitação. Aguarde um instante.'
-              : 'Clique para simular uma operação com retorno ao usuário.'}
+              : 'Use credenciais válidas da Fake Store API para testar.'}
           </p>
 
           <p className="status-message" aria-live="polite">
