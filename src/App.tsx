@@ -1,20 +1,18 @@
-import { useEffect, useRef, useState, type FormEvent } from 'react'
+import { useState, type FormEvent } from 'react'
+import axios from 'axios'
 import './App.css'
+
+type LoginResponse = {
+  token?: string
+}
 
 function App() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [statusMessage, setStatusMessage] = useState('')
-  const submitTimerRef = useRef<number | null>(null)
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
 
-  useEffect(() => {
-    return () => {
-      if (submitTimerRef.current !== null) {
-        window.clearTimeout(submitTimerRef.current)
-      }
-    }
-  }, [])
-
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
     if (isSubmitting) {
@@ -22,41 +20,83 @@ function App() {
     }
 
     setIsSubmitting(true)
-    setStatusMessage('Processando seu acesso. Aguarde um instante.')
+    setStatusMessage('Verificando login...')
 
-    submitTimerRef.current = window.setTimeout(() => {
+    try {
+      const response = await axios.post<LoginResponse>('https://fakestoreapi.com/auth/login', {
+        username,
+        password,
+      })
+
+      if (response.data?.token) {
+        setStatusMessage(`Login validado com sucesso! Token: ${response.data.token}`)
+      } else {
+        setStatusMessage('Login não retornou token de sucesso.')
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        setStatusMessage('Falha ao validar login. Verifique usuário e senha.')
+      } else {
+        setStatusMessage('Não foi possível validar login no momento.')
+      }
+    } finally {
       setIsSubmitting(false)
-      setStatusMessage('Ação concluída com sucesso!')
-    }, 1600)
+    }
   }
 
   return (
     <main className="button-demo-page">
       <section className="button-demo-card" aria-labelledby="demo-title">
         <p className="eyebrow">Exercício de UX</p>
-        <h1 id="demo-title">Botão de Carregamento</h1>
+        <h1 id="demo-title">Tela de Login</h1>
         <p className="description">
-          Este exemplo simula uma ação que leva alguns segundos. O usuário recebe
-          retorno imediato, vê o estado atual e não consegue disparar a ação em
-          duplicidade.
+          Informe usuário e senha para validar o login via API Fake Store.
         </p>
 
         <form className="button-demo-form" onSubmit={handleSubmit} aria-busy={isSubmitting}>
+          <div className="field-group">
+            <label htmlFor="username">Usuário</label>
+            <input
+              id="username"
+              name="username"
+              type="text"
+              autoComplete="username"
+              placeholder="Digite seu usuário"
+              value={username}
+              onChange={(event) => setUsername(event.target.value)}
+              required
+            />
+          </div>
+
+          <div className="field-group">
+            <label htmlFor="password">Senha</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              placeholder="Digite sua senha"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              required
+            />
+          </div>
+
           <button type="submit" className="primary-button" disabled={isSubmitting}>
             {isSubmitting ? (
               <span className="button-loading" aria-live="polite">
                 <span className="spinner" aria-hidden="true" />
-                Enviando...
+                Entrando...
               </span>
             ) : (
-              'Enviar'
+              'Entrar'
             )}
           </button>
 
           <p className="helper-text">
             {isSubmitting
               ? 'Processando a solicitação. Aguarde um instante.'
-              : 'Clique para simular uma operação com retorno ao usuário.'}
+              : 'Preencha usuário e senha para entrar (ex.: mor_2314 / 83r5^_).'}
           </p>
 
           <p className="status-message" aria-live="polite">
