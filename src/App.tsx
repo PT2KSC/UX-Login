@@ -29,7 +29,7 @@ function App() {
       })
 
       if (response.data?.token) {
-        setStatusMessage('Login validado com sucesso!')
+        setStatusMessage(`Login validado com sucesso! Token: ${response.data.token}`)
       } else {
         setStatusMessage('Login não retornou token de sucesso.')
       }
@@ -48,7 +48,7 @@ function App() {
     <main className="button-demo-page">
       <section className="button-demo-card" aria-labelledby="demo-title">
         <p className="eyebrow">Exercício de UX</p>
-        <h1 id="demo-title">Botão de Carregamento</h1>
+        <h1 id="demo-title">Tela de Login</h1>
         <p className="description">
           Informe usuário e senha para validar o login via API Fake Store.
         </p>
@@ -83,7 +83,7 @@ function App() {
                 Entrando...
               </span>
             ) : (
-              'Login'
+              'Entrar'
             )}
           </button>
 
