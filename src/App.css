@@ -47,6 +47,38 @@
   gap: 14px;
 }
 
+.field-group {
+  display: grid;
+  gap: 8px;
+}
+
+.field-group label {
+  color: var(--text-h);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.field-group input {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 12px;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--text-h);
+  font: inherit;
+}
+
+.field-group input::placeholder {
+  color: rgba(71, 85, 105, 0.75);
+}
+
+.field-group input:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18);
+}
+
 .primary-button {
   width: 100%;
   min-height: 52px;

@@ -54,27 +54,33 @@ function App() {
         </p>
 
         <form className="button-demo-form" onSubmit={handleSubmit} aria-busy={isSubmitting}>
-          <label htmlFor="username">Usuário</label>
-          <input
-            id="username"
-            name="username"
-            type="text"
-            autoComplete="username"
-            value={username}
-            onChange={(event) => setUsername(event.target.value)}
-            required
-          />
+          <div className="field-group">
+            <label htmlFor="username">Usuário</label>
+            <input
+              id="username"
+              name="username"
+              type="text"
+              autoComplete="username"
+              placeholder="Digite seu usuário"
+              value={username}
+              onChange={(event) => setUsername(event.target.value)}
+              required
+            />
+          </div>
 
-          <label htmlFor="password">Senha</label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            autoComplete="current-password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            required
-          />
+          <div className="field-group">
+            <label htmlFor="password">Senha</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              placeholder="Digite sua senha"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              required
+            />
+          </div>
 
           <button type="submit" className="primary-button" disabled={isSubmitting}>
             {isSubmitting ? (
@@ -90,7 +96,7 @@ function App() {
           <p className="helper-text">
             {isSubmitting
               ? 'Processando a solicitação. Aguarde um instante.'
-              : 'Use credenciais válidas da Fake Store API para testar.'}
+              : 'Preencha usuário e senha para entrar (ex.: mor_2314 / 83r5^_).'}
           </p>
 
           <p className="status-message" aria-live="polite">
