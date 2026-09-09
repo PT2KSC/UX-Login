@@ -1,5 +1,10 @@
 import { useState, type FormEvent } from 'react'
+import axios from 'axios'
 import './App.css'
+
+type LoginResponse = {
+  token?: string
+}
 
 function App() {
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -18,24 +23,22 @@ function App() {
     setStatusMessage('Verificando login...')
 
     try {
-      const response = await fetch('https://fakestoreapi.com/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username,
-          password,
-        }),
+      const response = await axios.post<LoginResponse>('https://fakestoreapi.com/auth/login', {
+        username,
+        password,
       })
 
-      if (!response.ok) {
-        throw new Error('Credenciais inválidas')
+      if (response.data?.token) {
+        setStatusMessage('Login validado com sucesso!')
+      } else {
+        setStatusMessage('Login não retornou token de sucesso.')
       }
-
-      setStatusMessage('Login validado com sucesso!')
-    } catch {
-      setStatusMessage('Falha ao validar login. Verifique usuário e senha.')
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        setStatusMessage('Falha ao validar login. Verifique usuário e senha.')
+      } else {
+        setStatusMessage('Não foi possível validar login no momento.')
+      }
     } finally {
       setIsSubmitting(false)
     }
